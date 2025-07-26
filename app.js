@@ -1,14 +1,21 @@
-const http = require('http');
-
-const server = http.createServer((req,res)=>{
-    if(req.url == "/about") {
-        res.end("the about page")
-    }
-    if(req.url == "/profile") {
-        res.end("the profile page")
-    }
-    if( req.url == "/") {
-        res.end("home pagebdfvbfd")
-    }
+const express = require('express');
+const morgan = require('morgan')
+const app = express()
+app.use((req,res,next)=>{
+    console.log("this is middleware")
+    return next();
 })
-server.listen(3000);
+app.use(morgan('dev'));
+app.set('view engine' , 'ejs')
+app.get('/' ,  (req,res,next)=>{
+    const a = 1;
+    const b = 2;
+    console.log(a+b);
+    next();
+},
+ (req,res)=>{res.render("index")})
+app.get('/about' ,(req,res)=>{res.send("welcome about")} )
+app.get('/profile' , (req,res)=>{res.send("profile page")}) 
+
+
+app.listen(3000)
